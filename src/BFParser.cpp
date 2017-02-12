@@ -3,6 +3,7 @@
 #include <exception>
 #include <iostream>
 #include <stack>
+#include <string>
 #include <vector>
 
 #include "Memory.hpp"
@@ -83,7 +84,7 @@ bool BFParser::exec(std::size_t const mem_size) const
 				}
 
 				if (inst_ptr == m_instructions.size())
-					throw std::runtime_error("Loop terminaison not found");
+					throw std::runtime_error("Bad-formed loop");
 			}
 			else
 				loop_stack.push(inst_ptr);
@@ -98,7 +99,7 @@ bool BFParser::exec(std::size_t const mem_size) const
 					loop_stack.pop();
 			}
 			else
-				throw std::runtime_error("Loop start not found");
+				throw std::runtime_error("Bad-formed loop");
 			break;
 
 		default:
@@ -107,4 +108,75 @@ bool BFParser::exec(std::size_t const mem_size) const
 	}
 
 	return true;
+}
+
+bool BFParser::dump() const
+{
+	if (!check())
+		throw std::runtime_error("Bad-formed loop");
+
+	std::size_t const indent_size{4};
+	std::size_t indent_level{0};
+
+	auto new_line = [&]() {
+		std::cout << std::endl;
+		for (std::size_t i{0}; i < indent_level * indent_size; ++i)
+			std::cout << ' ';
+	};
+
+	// printing the code
+	for (auto const inst : m_instructions)
+	{
+		switch (inst)
+		{
+		case '[':
+			new_line();
+			std::cout << inst;
+			++indent_level;
+			new_line();
+			break;
+
+		case ']':
+			--indent_level;
+			new_line();
+			std::cout << inst;
+			new_line();
+			break;
+
+		case '.':
+		case ',':
+			std::cout << inst;
+			new_line();
+			break;
+
+		default:
+			std::cout << inst;
+		}
+	}
+	std::cout << std::endl;
+
+	return true;
+}
+
+bool BFParser::check() const
+{
+	// checks if loops are well-formed
+	std::size_t loop_count{0};
+	for (auto const inst : m_instructions)
+	{
+		if (inst == '[')
+			++loop_count;
+		else if (inst == ']')
+		{
+			if (loop_count != 0)
+				--loop_count;
+			else
+				return false;
+		}
+	}
+
+	if (loop_count != 0)
+		return false;
+	else
+		return true;
 }

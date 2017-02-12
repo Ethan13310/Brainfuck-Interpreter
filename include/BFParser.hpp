@@ -1,8 +1,8 @@
 #ifndef BFPARSER_HPP
 #define BFPARSER_HPP
 
-#include <vector>
 #include <string>
+#include <vector>
 
 #include "Memory.hpp"
 
@@ -19,6 +19,8 @@ public:
 	BFParser& operator=(BFParser&&) = default;
 
 	bool exec(std::size_t mem_size = 1024) const;
+	bool dump() const;
+	bool check() const;
 
 private:
 	std::vector<Memory::byte_t> m_instructions;

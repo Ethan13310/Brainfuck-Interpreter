@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
 {
 	if (argc < 2 || argc > 3)
 	{
-		std::cout << "Usage: ./brainfck <file_path> [<memory_size>]" << std::endl;
+		std::cout << "Usage: ./brainfck <file_path> [<memory_size> | --dump]" << std::endl;
 		return 1;
 	}
 
@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
 	std::string const code{std::istreambuf_iterator<char>{ifs}, std::istreambuf_iterator<char>{}};
 	std::size_t mem_size{4096}; // default size = 4 Kio
 
-	if (argc == 3)
+	if (argc == 3 && std::string{argv[2]} != "--dump")
 	{
 		// use custom memory size
 		try
@@ -44,7 +44,10 @@ int main(int argc, char* argv[])
 	try
 	{
 		BFParser parser{code};
-		parser.exec(mem_size);
+		if (argc == 3 && std::string{argv[2]} == "--dump")
+			parser.dump();
+		else
+			parser.exec(mem_size);
 	}
 	catch (std::runtime_error const& e)
 	{
