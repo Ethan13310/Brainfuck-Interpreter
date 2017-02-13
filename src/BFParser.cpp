@@ -115,12 +115,11 @@ bool BFParser::dump() const
 	if (!check())
 		throw std::runtime_error("Bad-formed loop");
 
-	std::size_t const indent_size{4};
 	std::size_t indent_level{0};
 
-	auto new_line = [&]() {
+	auto new_line = [&indent_level]() {
 		std::cout << std::endl;
-		for (std::size_t i{0}; i < indent_level * indent_size; ++i)
+		for (std::size_t i{0}; i < indent_level * 4; ++i)
 			std::cout << ' ';
 	};
 
@@ -139,9 +138,6 @@ bool BFParser::dump() const
 		case ']':
 			--indent_level;
 			new_line();
-			std::cout << inst;
-			new_line();
-			break;
 
 		case '.':
 		case ',':
@@ -160,23 +156,20 @@ bool BFParser::dump() const
 
 bool BFParser::check() const
 {
-	// checks if loops are well-formed
 	std::size_t loop_count{0};
+
+	// checks if loops are well-formed
 	for (auto const inst : m_instructions)
 	{
 		if (inst == '[')
 			++loop_count;
 		else if (inst == ']')
 		{
-			if (loop_count != 0)
-				--loop_count;
-			else
+			if (loop_count == 0)
 				return false;
+			--loop_count;
 		}
 	}
 
-	if (loop_count != 0)
-		return false;
-	else
-		return true;
+	return (loop_count == 0);
 }

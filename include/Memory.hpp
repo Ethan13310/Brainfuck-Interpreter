@@ -43,16 +43,13 @@ public:
 
 	void resize(std::size_t const new_size)
 	{
-		if (new_size > size())
+		try
 		{
-			try
-			{
-				m_data.resize(new_size, 0);
-			}
-			catch (std::bad_alloc const& /*e*/)
-			{
-				throw std::runtime_error("Insufficient memory");
-			}
+			m_data.resize(new_size, 0);
+		}
+		catch (std::bad_alloc const& /*e*/)
+		{
+			throw std::runtime_error("Insufficient memory");
 		}
 	}
 

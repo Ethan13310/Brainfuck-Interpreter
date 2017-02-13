@@ -29,11 +29,13 @@ int main(int argc, char* argv[])
 		try
 		{
 			int const size{std::stoi(argv[2])};
-			if (size < 2 || size > 512 * 1024 * 1024 /* 512 Mio */)
+
+			if (size < 2 || size > 512 * 1024 * 1024) // max 512 Mio
 				throw std::invalid_argument("Invalid memory size");
+
 			mem_size = size;
 		}
-		catch (std::invalid_argument const& /*e*/)
+		catch (std::exception const& /*e*/)
 		{
 			std::cout << "[ warn ] Specified memory size is invalid" << std::endl;
 			std::cout << "[ info ] Default memory size will be used (" << mem_size << " bytes)" << std::endl;
@@ -44,6 +46,7 @@ int main(int argc, char* argv[])
 	try
 	{
 		BFParser parser{code};
+
 		if (argc == 3 && std::string{argv[2]} == "--dump")
 			parser.dump();
 		else
