@@ -2,11 +2,12 @@
 # Makefile for Brainfuck Interpreter
 #
 
-CXXFLAGS	=	-O2 -std=c++14
+CXXFLAGS	=	-Wall -Wextra -O2 -std=c++14
 
 CPPFLAGS	=	-I ./include
 
-SRC			=	src/BFParser.cpp	\
+SRC			=	src/BFInterpreter.cpp	\
+				src/BFParser.cpp		\
 				src/Main.cpp
 
 OBJ			=	$(SRC:.cpp=.o)
