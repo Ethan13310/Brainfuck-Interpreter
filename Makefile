@@ -4,10 +4,9 @@
 
 CXXFLAGS	=	-Wall -Wextra -O2 -std=c++14
 
-CPPFLAGS	=	-I ./include
+CPPFLAGS	=	-I include
 
-SRC			=	src/BFInterpreter.cpp	\
-				src/BFParser.cpp		\
+SRC			=	src/Parser.cpp \
 				src/Main.cpp
 
 OBJ			=	$(SRC:.cpp=.o)
@@ -26,3 +25,5 @@ fclean:		clean
 			rm -f $(NAME)
 
 re:			fclean all
+
+.PHONY:		all clean fclean re

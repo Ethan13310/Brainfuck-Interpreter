@@ -16,9 +16,9 @@ make
 ## Usage
 
 ```bash
-./brainfck <file_name> [<memory_size> | --dump]
+./brainfck <file_name> [--dump]
 ```
 
-Default memory size is 4096 bytes. The allocated memory will be resized at runtime if necessary.
+Default memory size is 128 KiB. It will be resized at runtime if necessary.
 
 You can print a formatted version of the code by using **--dump**.

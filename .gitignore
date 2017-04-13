@@ -1,2 +1,10 @@
 *.o
+*.sln
+*.VC
+*.VC.*
+*.vcxproj
+*.vcxproj.*
+*.log
+.vs
 brainfck
+brainfck.exe
