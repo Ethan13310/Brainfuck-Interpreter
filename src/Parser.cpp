@@ -17,7 +17,7 @@ namespace bf
         std::ifstream ifs{filepath};
 
         if (!ifs.is_open())
-            throw std::runtime_error("Unable to open file \"" + filepath + "\"");
+            throw std::runtime_error{"Unable to open file"};
 
         auto const start = std::istreambuf_iterator<char>{ifs};
         auto const end = std::istreambuf_iterator<char>{};
@@ -100,7 +100,7 @@ namespace bf
                     }
 
                     if (inst_ptr == m_instructions.size())
-                        throw std::runtime_error("Bad-formed loop");
+                        throw std::runtime_error{"Bad-formed loop"};
                 }
                 else
                     loop_stack.push(inst_ptr);
@@ -115,12 +115,12 @@ namespace bf
                         loop_stack.pop();
                 }
                 else
-                    throw std::runtime_error("Bad-formed loop");
+                    throw std::runtime_error{"Bad-formed loop"};
                 break;
 
             default:
                 // should never happen
-                throw std::runtime_error("Illegal instruction");
+                throw std::runtime_error{"Illegal instruction"};
             }
         }
     }
@@ -128,7 +128,7 @@ namespace bf
     void Parser::dump() const
     {
         if (!isValidCode())
-            throw std::runtime_error("Bad-formed loop");
+            throw std::runtime_error{"Bad-formed loop"};
 
         std::size_t indent_level{0};
 

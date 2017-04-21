@@ -10,7 +10,7 @@ namespace bf
     public:
         using byte_t = unsigned char;
 
-        explicit Memory(std::size_t size = 1024) :
+        explicit Memory(std::size_t const size = 1024) :
             m_data(size, 0),
             m_ptr{0}
         {}
@@ -59,8 +59,8 @@ namespace bf
         }
 
     private:
-        std::vector<byte_t> m_data;
-        std::size_t m_ptr;
+        std::vector<byte_t> m_data{};
+        std::size_t m_ptr{};
     };
 }
 

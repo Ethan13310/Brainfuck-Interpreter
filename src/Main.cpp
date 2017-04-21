@@ -26,11 +26,11 @@ int main(int argc, char* argv[])
     }
     catch (std::runtime_error const& e)
     {
-        std::cerr << "[ error ] " << e.what() << std::endl;
+        std::cerr << "Error: " << e.what() << std::endl;
     }
     catch (std::bad_alloc const& /*e*/)
     {
-        std::cerr << "[ error ] Insufficient memory" << std::endl;
+        std::cerr << "Error: Insufficient memory" << std::endl;
     }
     return 1;
 }

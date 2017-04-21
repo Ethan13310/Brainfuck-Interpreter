@@ -9,12 +9,20 @@ namespace bf
     class Arguments
     {
     public:
-        Arguments(int argc, char* argv[]) :
+        explicit Arguments(int argc, char* argv[]) :
             m_args{}
         {
             for (int i{1}; i < argc; ++i)
                 m_args.push_back(argv[i]);
         }
+
+        ~Arguments() = default;
+
+        Arguments(Arguments const&) = default;
+        Arguments(Arguments&&) = default;
+
+        Arguments& operator=(Arguments const&) = default;
+        Arguments& operator=(Arguments&&) = default;
 
         bool hasLong(std::string const& arg_name) const
         {
@@ -40,7 +48,7 @@ namespace bf
         }
 
     private:
-        std::vector<std::string> m_args;
+        std::vector<std::string> m_args{};
     };
 }
 
