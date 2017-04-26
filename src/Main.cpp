@@ -1,4 +1,6 @@
+#include <cmath>
 #include <exception>
+#include <iomanip>
 #include <iostream>
 
 #include "Arguments.hpp"
@@ -10,7 +12,7 @@ int main(int argc, char* argv[])
 
     if (args.hasLong("help") || args.count() == 0 || args.count() > 2)
     {
-        std::cout << "Usage: ./brainfck <file_path> [--dump]" << std::endl;
+        std::cout << "Usage: ./brainfck <file_path> [--dump | --time]" << std::endl;
         return 1;
     }
 
@@ -21,7 +23,15 @@ int main(int argc, char* argv[])
         if (args.hasLong("dump"))
             parser.dump();
         else
+        {
             parser.execute();
+            if (args.hasLong("time"))
+            {
+                std::cout << "\nProgram terminated" << std::fixed << std::setprecision(3);
+                double const exec_time = parser.lastExecutionTime().count() / 1000000000.0;
+                std::cout << "\nExecution time: " << exec_time << "s" << std::endl;
+            }
+        }
         return 0;
     }
     catch (std::runtime_error const& e)

@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <array>
+#include <chrono>
 #include <exception>
 #include <fstream>
 #include <iostream>
@@ -41,13 +42,18 @@ namespace bf
         }
     }
 
-    void Parser::execute() const
+    void Parser::execute()
     {
         // program memory
         Memory memory{128 * 1024};
 
         // loop start addresses stack
         std::stack<std::size_t> loop_stack{};
+
+        // last print character
+        char last_print{'\n'};
+
+        auto const start_time = std::chrono::high_resolution_clock::now();
 
         for (std::size_t inst_ptr{0}; inst_ptr < m_instructions.size(); ++inst_ptr)
         {
@@ -73,12 +79,13 @@ namespace bf
                 break;
 
             case '.':
-                std::cout << memory.get() << std::flush;
+                last_print = memory.get();
+                std::cout << last_print << std::flush;
                 break;
 
             case ',':
                 memory.set(std::cin.get());
-                if (memory.get() == '\n') // EOL
+                if (std::cin.eof() || memory.get() == '\n') // EOL
                     memory.set('\0');
                 break;
 
@@ -123,6 +130,13 @@ namespace bf
                 throw std::runtime_error{"Illegal instruction"};
             }
         }
+
+        if (last_print != '\n')
+            std::cout << std::endl;
+
+        auto const end_time = std::chrono::high_resolution_clock::now();
+        auto const duration = end_time - start_time;
+        m_exec_time = std::chrono::duration_cast<std::chrono::nanoseconds>(duration);
     }
 
     void Parser::dump() const
@@ -184,5 +198,10 @@ namespace bf
         }
 
         return (loop_count == 0);
+    }
+
+    std::chrono::nanoseconds Parser::lastExecutionTime() const
+    {
+        return m_exec_time;
     }
 }

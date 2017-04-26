@@ -1,6 +1,7 @@
 #ifndef PARSER_HPP
 #define PARSER_HPP
 
+#include <chrono>
 #include <string>
 #include <vector>
 
@@ -23,13 +24,16 @@ namespace bf
         void loadFromFile(std::string const& filepath);
         void loadFromMemory(std::vector<Memory::byte_t> const& code);
 
-        void execute() const;
+        void execute();
         void dump() const;
 
         bool isValidCode() const;
 
+        std::chrono::nanoseconds lastExecutionTime() const;
+
     private:
         std::vector<Memory::byte_t> m_instructions{};
+        std::chrono::nanoseconds m_exec_time{};
     };
 }
 
