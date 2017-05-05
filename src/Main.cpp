@@ -1,4 +1,3 @@
-#include <cmath>
 #include <exception>
 #include <iomanip>
 #include <iostream>
